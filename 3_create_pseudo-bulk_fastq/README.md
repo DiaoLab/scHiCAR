@@ -153,4 +153,4 @@ nextflow pull jianhong/hicar -r dev2rc #dev2rc is the newest version
   
 nextflow run jianhong/hicar -profile singularity --genome mm10 -r dev2rc --input samplesheet.csv --skip_fastqc --skip_cutadapt --outdir result --skip_interactions --skip_tads --skip_diff_analysis --skip_peak_qc --skip_igv --skip_trackhub --skip_circos --pairtools_parse_version parse2 -resume
 ```  
-The scripts used in scHiCAR paper refer to the nf-core/hicar pipeline, the details can be found in [paper_scripts.md](https://github.com/yueyuanxu/scHiCAR/blob/main/3_create_pseudo-bulk_fastq/paper_scripts.md)
+The scripts used in scHiCAR paper refer to the nf-core/hicar pipeline, the details can be found in [paper_scripts.md](https://github.com/DiaoLab/scHiCAR/blob/main/3_create_pseudo-bulk_fastq/paper_scripts.md)
