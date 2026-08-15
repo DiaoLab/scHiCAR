@@ -13,7 +13,7 @@
 - **BWA**: [v0.7.17](https://github.com/lh3/bwa/releases/tag/v0.7.17)
 - **SAMTOOLS**: [v1.12](https://github.com/samtools/samtools/releases/download/1.12/samtools-1.12.tar.bz2)
 
-### 1. Preprocess raw FASTQ files of the RNA library with Snakemake and align sequences to the genome ([code](https://github.com/yueyuanxu/scHiCAR/tree/dev/1_RNA_preprocess))
+### 1. Preprocess raw FASTQ files of the RNA library with Snakemake and align sequences to the genome ([code](https://github.com/DiaoLab/scHiCAR/tree/dev/1_RNA_preprocess))
 
 #### a. Snakemake procedures:
 - Trim specific sequences at the 5′ end of Read 1.  
@@ -29,7 +29,7 @@ The resulting files (`03_corrected_fq/*_all_L001_R*_001.fastq.gz`) are ready for
 
 #### b. Generate filtered gene expression matrices (`barcodes.tsv`, `features.tsv`, and `matrix.mtx`) with STAR.
 
-### 2. Preprocess raw FASTQ files of the DNA library with Snakemake ([code](https://github.com/yueyuanxu/scHiCAR/tree/dev/2_DNA_preprocess))
+### 2. Preprocess raw FASTQ files of the DNA library with Snakemake ([code](https://github.com/DiaoLab/scHiCAR/tree/dev/2_DNA_preprocess))
 
 #### Snakemake procedures:
 - Trim specific sequences at the 5′ end of both Read 1 and Read 2.  
@@ -42,7 +42,7 @@ The resulting files (`03_corrected_fq/*_all_L001_R*_001.fastq.gz`) are ready for
 
 The resulting files (`05_cutME_fq/*_cutME_L001_R*_001.fastq.gz`) are ready for generating ATAC fragment files and chromatin contact pair files.
 
-### 3. Generate ATAC fragment files with Snakemake (`*.tsv.gz`)([code](https://github.com/yueyuanxu/scHiCAR/tree/dev/3_ATAC_fragment))
+### 3. Generate ATAC fragment files with Snakemake (`*.tsv.gz`)([code](https://github.com/DiaoLab/scHiCAR/tree/dev/3_ATAC_fragment))
 
 #### Snakemake procedures:
 - Align R1 reads to the reference genome using Snaptools with BWA, and sort BAM files by read name.
@@ -52,7 +52,7 @@ The resulting files (`05_cutME_fq/*_cutME_L001_R*_001.fastq.gz`) are ready for g
 
 The resulting files (`03/filtered/*.filtered.tsv.gz`) can be used in standard scATAC-seq downstream analysis.
 
-### 4. Generate chromatin contact pair files with Snakemake (`*.dedup.pairs.gz`)([code](https://github.com/yueyuanxu/scHiCAR/tree/dev/4_chromatin_contact))
+### 4. Generate chromatin contact pair files with Snakemake (`*.dedup.pairs.gz`)([code](https://github.com/DiaoLab/scHiCAR/tree/dev/4_chromatin_contact))
 
 #### Snakemake procedures:
 - Align reads using BWA-MEM with -SP mode and convert SAM output to BAM format.
@@ -66,7 +66,7 @@ The resulting files (`03/filtered/*.filtered.tsv.gz`) can be used in standard sc
 
 The resulting files (`05_filtered/*.dedup.filtered.pairs.gz`) can be used in downsteam pseudo-bulk or single-cell contact analysis.
 
-### 5. Downstream pseudo-bulk / single-cell analysis ([code](https://github.com/yueyuanxu/scHiCAR/tree/dev/5_downstream_analysis))
+### 5. Downstream pseudo-bulk / single-cell analysis ([code](https://github.com/DiaoLab/scHiCAR/tree/dev/5_downstream_analysis))
 
 ### Citation
 Wei, X., Xu, Y., Yang, D. et al. Trimodal single-cell profiling of transcriptome, epigenome and 3D genome in complex tissues with scHiCAR. *Nat Biotechnol* (2026). https://doi.org/10.1038/s41587-026-03013-7
