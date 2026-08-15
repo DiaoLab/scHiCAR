@@ -28,7 +28,7 @@ For each cell type, the following processed files are available:
 
 For both the cell line and mouse brain datasets described above, ATAC fragments and chromatin contact pairs can be extracted from the `.pairsam` files by following **Steps 3-6** in our processing pipeline:
 
-[scHiCAR processing pipeline – Step 3: Extract Read 2 from PETs to call open chromatin peaks](https://github.com/yueyuanxu/scHiCAR/tree/main/3_create_pseudo-bulk_fastq/paper_scripts.md#3-extract-read2-from-pets-to-call-open-chromatin-peaks-with-q-value-cutoff-001)
+[scHiCAR processing pipeline – Step 3: Extract Read 2 from PETs to call open chromatin peaks](https://github.com/DiaoLab/scHiCAR/tree/main/3_create_pseudo-bulk_fastq/paper_scripts.md#3-extract-read2-from-pets-to-call-open-chromatin-peaks-with-q-value-cutoff-001)
 
 ## 3. mouse_brain_scHiCAR_1
 
