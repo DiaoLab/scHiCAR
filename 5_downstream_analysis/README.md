@@ -72,12 +72,39 @@ rna_filter <- subset(rna, cells = rownames(df2))
 rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownames(df2)), col.name = "DNAbarcode")
 ```
 
-`write.table(rna_filter@meta.data,"example_metadata.txt",quote=F,sep='\t',col.names=T,row.names=T)` outputs the cell type and DNA barcode information after cell clustering and annotation with Seurat. The metadata table will be used for downstream pseudo-bulk and single-cell analysis of the DNA library.
+#### 1.7 cell clustering and annotation
+```r
+# R
+rna_filter <- NormalizeData(rna_filter)
+rna_filter <- FindVariableFeatures(rna_filter, selection.method = "vst", nfeatures = 2000)
+rna_filter <- ScaleData(rna_filter)
+rna_filter <- RunPCA(rna_filter,npcs=30)
+rna_filter <- FindNeighbors(rna_filter, reduction = "pca", dims = 1:30)
+rna_filter <- FindClusters(rna_filter, resolution = 0.5)
+rna_filter <- RunUMAP(rna_filter, reduction = "pca", dims = 1:30)
+marker_genes <- FindAllMarkers(rna_filter, only.pos = TRUE)
+new.cluster.ids <- c("celltype1", "celltype2", "celltype3",...,"celltypeN")
+names(new.cluster.ids) <- levels(rna_filter)
+rna_filter <- RenameIdents(rna_filter, new.cluster.ids)
+rna_filter$celltype <- Idents(rna_filter) # Add cell type annotation to metadata
+DimPlot(rna_filter, reduction = "umap", group.by = "celltype", label = TRUE)
+write.table(rna_filter@meta.data,"single_cell_metadata.txt",quote=F,sep='\t',col.names=T,row.names=T) # For downstream single cell ATAC analysis
+write.table(rna_filter@meta.data$DNAbarcode,"all_valid_DNA_barcodes.txt",quote=F,col.names=F,row.names=F) # For downstream single cell 3D genome analysis
+```
+
+#### 1.8 Extract DNA barcodes for each cell type for downstream pseudo-bulk analyses of the DNA library
+```r
+# R
+meta <- rna_filter@meta.data
+barcode_list <- split(meta$DNAbarcode, meta$celltype)
+for (celltype in names(barcode_list)) {
+  write.table(barcode_list[[celltype]],file=paste0(celltype, ".DNAbarcode.txt"),quote=F,col.names=F,row.names=F)
+}
+```
 
 # 2. Pseudo-bulk processing
 
 #### 2.1 Generate pseudo-bulk ATAC fragment files and contact pair files for each cell type
-Before running the code below, make sure to extract DNA barcodes for each cell type from "example_metadata.txt" and save each as a single-column file (*.DNAbarcode.txt).
 ```bash
 # Bash
 for i in {celltype1,celltype2,celltype3,...,celltypeN}
@@ -130,6 +157,7 @@ pairtools sort -o ${j}.sort.pairs.gz ${j}.contact.pairs.gz
 pairix -f ${j}.sort.pairs.gz
 cooler cload pairix --max-split 2 --nproc 12 ${chrom_size}:5000 ${j}.sort.pairs.gz ${j}.5000.cool
 cooler zoomify --balance -r 5000N -n 12 -o ${j}.5000.mcool ${j}.5000.cool
+done
 ```
 The *.cool file can be used to call A/B compartment, TAD, and chromatin loops for each cell types. The *.mcool file can be used to visualization with Higlass.
 
@@ -144,7 +172,7 @@ addArchRThreads(threads = 1)
 addArchRGenome("mm10")
 createArrowFiles(inputFiles = "03_filtered/*.filtered.tsv.gz", sampleNames = "example", minTSS = 1, minFrags = 1000, addTileMat = TRUE, addGeneScoreMat = TRUE) # Set a small cutoff for minTSS and minFrags if you just want to retain the same cells as in rna_filter@meta.data.
 dna <- ArchRProject(ArrowFiles = "example.arrow",outputDirectory = "obj.name", copyArrows = TRUE)
-rna_metadata<-read.table("example_metadata.txt",header=T,sep='\t',row.names=1)
+rna_metadata<-read.table("single_cell_metadata.txt",header=T,sep='\t',row.names=1)
 dna_filter<-dna[paste("obj.name#",rna_metadata$DNAbarcode,sep=""), ] #filter cells based on the cell barcodes of rna_filter@meta.data
 GSmatrix <- getMatrixFromProject(dna_filter,"GeneScoreMatrix")
 rownames(GSmatrix)<-rowData(GSmatrix)$name
