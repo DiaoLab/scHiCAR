@@ -55,7 +55,7 @@ df$DNAbarcode2<-NULL
 df$DNAbarcode3<-NULL
 ```
 
-#### 1.5 filter cells based on the high-quliaty barcode list generate from [3_ATAC_fragment](https://github.com/DiaoLab/scHiCAR/tree/dev/3_ATAC_fragment) and [4_chromatin_contact](https://github.com/DiaoLab/scHiCAR/tree/dev/4_chromatin_contact)
+#### 1.5 Filter cells based on the high-quliaty barcode list generate from [3_ATAC_fragment](https://github.com/DiaoLab/scHiCAR/tree/dev/3_ATAC_fragment) and [4_chromatin_contact](https://github.com/DiaoLab/scHiCAR/tree/dev/4_chromatin_contact)
 ```r
 # R
 atac_cut_rank<-read.table("3_ATAC_fragment/02_fragment/*.barcode.cut_rank")$V1
@@ -72,7 +72,7 @@ rna_filter <- subset(rna, cells = rownames(df2))
 rna_filter <- AddMetaData(rna_filter, metadata = setNames(df2$DNAbarcode, rownames(df2)), col.name = "DNAbarcode")
 ```
 
-#### 1.7 cell clustering and annotation
+#### 1.7 Cell clustering and annotation
 ```r
 # R
 rna_filter <- NormalizeData(rna_filter)
