@@ -101,7 +101,7 @@ rule extract_barcode_based_on_knee: # extract high-quality barcodes based on the
     shell:
         """
         zcat {input[0]} > {output[0]}
-        awk '{{print substr($1,0,18)}}' {output[0]} | sort | uniq -c | sort -nrk1,1 >  {output[1]}
+        awk '$1 !~ /^#/ {print substr($1,1,18)}' {output[0]} | sort | uniq -c | sort -nrk1,1 >  {output[1]}
         Rscript script/extract_barcode_based_on_knee.R {output[1]} 1.05 {output[2]}
         """
 
