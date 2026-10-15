@@ -58,8 +58,8 @@ df$DNAbarcode3<-NULL
 #### 1.5 Filter cells based on the high-quliaty barcode list generate from [3_ATAC_fragment](https://github.com/DiaoLab/scHiCAR/tree/dev/3_ATAC_fragment) and [4_chromatin_contact](https://github.com/DiaoLab/scHiCAR/tree/dev/4_chromatin_contact)
 ```r
 # R
-atac_cut_rank<-read.table("3_ATAC_fragment/02_fragment/*.barcode.cut_rank")$V1
-pairs_cut_rank<-read.table("4_chromatin_contact/03_dedup/*.barcode.cut_rank")$V1
+atac_cut_rank<-read.table("3_ATAC_fragment/02_fragment/*.barcode.cut_rank",sep=" ")$V2
+pairs_cut_rank<-read.table("4_chromatin_contact/03_dedup/*.barcode.cut_rank",sep=" ")$V2
 valid_DNA_barcodes <- intersect(atac_cut_rank, pairs_cut_rank)
 df2 <- df[df$DNAbarcode %in% valid_DNA_barcodes, ]
 # Note: If you also want to filter cells based on TSS enrichment, please run the ArchR functions (`createArrowFiles` and  `ArchRProject` steps in the "3. Single-cell processing") first and export the processed barcode list for additional filtering here.
